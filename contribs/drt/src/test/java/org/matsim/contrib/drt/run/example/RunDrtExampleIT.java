@@ -53,6 +53,20 @@ public class RunDrtExampleIT {
 	}
 	
 	@Test
+	public void testRunDrtExampleWithRemovingUnnecessaryPlanAttributes() {
+		String configFile = "./src/main/resources/drt_example/drtconfig_door2door.xml";
+		Config config = ConfigUtils.loadConfig(configFile, new DrtConfigGroup(), new DvrpConfigGroup(),
+				new OTFVisConfigGroup());
+		config.plans().setInputFile("cb-drtplans_test.xml.gz");
+		config.plans().setRemovingUnneccessaryPlanAttributes(true);
+		config.controler().setLastIteration(1);
+		
+		config.controler().setOverwriteFileSetting(OverwriteFileSetting.deleteDirectoryIfExists);
+		config.controler().setOutputDirectory(utils.getOutputDirectory());
+		RunDrtExample.run(config, false);
+	}
+	
+	@Test
 	public void testRunDrtStopbasedExample() {
 		String configFile = "./src/main/resources/drt_example/drtconfig_stopbased.xml";
 		Config config = ConfigUtils.loadConfig(configFile, new DrtConfigGroup(), new DvrpConfigGroup(),
